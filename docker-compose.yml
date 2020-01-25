@@ -1,0 +1,25 @@
+version: "3"
+
+services:
+  pts_mysql:
+    image: mysql:5.7
+    container_name: pts_mysql
+    environment:
+      MYSQL_ROOT_PASSWORD: root
+    ports:
+      - 3306:3306
+    volumes:
+      - devmysqldb:/var/lib/pts_mysql
+      - ./docker/mysql/pts_db.sql:/docker-entrypoint-initdb.d/pts_db.sql
+#  kds_api:
+#    build:
+#      context: src
+#      dockerfile: Dockerfile
+#    depends_on:
+#      - pts_mysql
+#    stdin_open: true
+#    tty: true
+#    ports:
+#      - 8080:8080
+volumes:
+  devmysqldb:
