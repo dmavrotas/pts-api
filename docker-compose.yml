@@ -12,18 +12,18 @@ services:
     volumes:
       - devmysqldb:/var/lib/pts_mysql
       - ./docker/mysql/pts_db.sql:/docker-entrypoint-initdb.d/pts_db.sql
-#  pts_api:
-#    build:
-#      context: .
-#      dockerfile: Dockerfile
-#    environment:
-#      - "SPRING_PROFILES_ACTIVE=docker"
-#    depends_on:
-#      - pts_mysql
-#    stdin_open: true
-#    restart : always
-#    tty: true
-#    ports:
-#      - 8080:8080
+  pts_api:
+    build:
+      context: .
+      dockerfile: Dockerfile
+    environment:
+      - "SPRING_PROFILES_ACTIVE=docker"
+    depends_on:
+      - pts_mysql
+    stdin_open: true
+    restart: always
+    tty: true
+    ports:
+      - 8080:8080
 volumes:
   devmysqldb:
