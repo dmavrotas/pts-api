@@ -1,6 +1,6 @@
 package com.dmavrotas.pts.api.config;
 
-import com.dmavrotas.pts.api.models.ParkingSlot;
+import com.dmavrotas.pts.api.models.AbstractEntity;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.boot.context.properties.ConfigurationProperties;
 import org.springframework.boot.jdbc.DataSourceBuilder;
@@ -23,7 +23,7 @@ import javax.sql.DataSource;
  * The profile test is coded in test file, with an embeded hsql server
  */
 @Configuration
-@EnableJpaRepositories(basePackages = {"com.dmavrotas.pts.api.config"},
+@EnableJpaRepositories(basePackages = {"com.dmavrotas.pts.api.repositories"},
                        entityManagerFactoryRef = "configurationManagerFactory",
                        transactionManagerRef = "configurationTransactionManager")
 @EnableTransactionManagement
@@ -67,7 +67,7 @@ public class PtsMySqlConfiguration
         var factoryBean = new LocalContainerEntityManagerFactoryBean();
         factoryBean.setDataSource(configurationDataSource());
         factoryBean.setJpaVendorAdapter(vendorAdapter);
-        factoryBean.setPackagesToScan(ParkingSlot.class.getPackage().getName());
+        factoryBean.setPackagesToScan(AbstractEntity.class.getPackage().getName());
         factoryBean.afterPropertiesSet();
 
         return factoryBean.getObject();
