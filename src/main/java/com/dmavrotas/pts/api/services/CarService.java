@@ -44,4 +44,14 @@ public class CarService implements IService<Car>
 
         return carRepository.findById(entity.getId()).orElse(null) == null;
     }
+
+    public Iterable<Car> getAllEntities()
+    {
+        return carRepository.findAll();
+    }
+
+    public Car getCarByRegistrationPlate(String registrationPlate)
+    {
+        return carRepository.getCarByRegistrationPlate(registrationPlate);
+    }
 }

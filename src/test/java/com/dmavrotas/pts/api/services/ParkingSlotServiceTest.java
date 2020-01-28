@@ -59,14 +59,14 @@ public class ParkingSlotServiceTest extends RepositoryTestHelper
         var savedParkingSlot = parkingSlotService.saveEntity(parkingSlot);
 
         assertNotNull(savedParkingSlot);
-        assertEquals(1, ((ArrayList) parkingSlotRepository.findAll()).size());
+        assertEquals(1, ((ArrayList) parkingSlotService.getAllEntities()).size());
 
         savedParkingSlot.setFree(false);
 
         savedParkingSlot = parkingSlotService.saveEntity(savedParkingSlot);
 
         assertNotNull(savedParkingSlot);
-        assertEquals(1, ((ArrayList) parkingSlotRepository.findAll()).size());
+        assertEquals(1, ((ArrayList) parkingSlotService.getAllEntities()).size());
         assertFalse(savedParkingSlot.isFree());
 
         parkingSlot = new ParkingSlot();
@@ -80,7 +80,7 @@ public class ParkingSlotServiceTest extends RepositoryTestHelper
         savedParkingSlot = parkingSlotService.saveEntity(parkingSlot);
 
         assertNotNull(savedParkingSlot);
-        assertEquals(2, ((ArrayList) parkingSlotRepository.findAll()).size());
+        assertEquals(2, ((ArrayList) parkingSlotService.getAllEntities()).size());
         assertEquals("EG-322-NF", savedParkingSlot.getCar().getRegistrationPlate());
 
         assertNull(parkingSlotService.getEntity(-2));
@@ -88,7 +88,7 @@ public class ParkingSlotServiceTest extends RepositoryTestHelper
         assertNotNull(parkingSlotService.getEntity(savedParkingSlot.getId()));
 
         assertTrue(parkingSlotService.deleteEntity(savedParkingSlot));
-        assertEquals(1, ((ArrayList) parkingSlotRepository.findAll()).size());
+        assertEquals(1, ((ArrayList) parkingSlotService.getAllEntities()).size());
 
         assertFalse(parkingSlotService.deleteEntity(null));
         assertNull(parkingSlotService.saveEntity(null));

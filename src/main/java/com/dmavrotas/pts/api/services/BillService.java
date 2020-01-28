@@ -1,7 +1,7 @@
 package com.dmavrotas.pts.api.services;
 
 import com.dmavrotas.pts.api.models.Bill;
-import com.dmavrotas.pts.api.repositories.*;
+import com.dmavrotas.pts.api.repositories.IBillRepository;
 import com.dmavrotas.pts.api.services.interfaces.IService;
 import org.springframework.stereotype.Component;
 
@@ -60,5 +60,10 @@ public class BillService implements IService<Bill>
         billRepository.delete(entity);
 
         return billRepository.findById(entity.getId()).orElse(null) == null;
+    }
+
+    public Iterable<Bill> getAllEntities()
+    {
+        return billRepository.findAll();
     }
 }

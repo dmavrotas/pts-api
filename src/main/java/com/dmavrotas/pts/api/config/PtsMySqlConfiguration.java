@@ -30,20 +30,38 @@ import javax.sql.DataSource;
 public class PtsMySqlConfiguration
 {
     /**
-     * Loading profile
+     * Loading profile default
      */
     @Configuration
     @Profile({"default"})
     @PropertySource("classpath:configuration.properties")
-    static class ManagerFactorConfigurationEnv
+    static class ManagerFactorConfigurationDefault
     {
-        ManagerFactorConfigurationEnv()
+        ManagerFactorConfigurationDefault()
         {
         }
 
         static
         {
-//            logger.info("-- MySQL config with profile");
+            //            logger.info("-- MySQL config with profile");
+        }
+    }
+
+    /**
+     * Loading profileDocker
+     */
+    @Configuration
+    @Profile({"docker"})
+    @PropertySource("classpath:configuration-docker.properties")
+    static class ManagerFactorConfigurationDocker
+    {
+        ManagerFactorConfigurationDocker()
+        {
+        }
+
+        static
+        {
+            //            logger.info("-- MySQL config with profile");
         }
     }
 
@@ -77,7 +95,7 @@ public class PtsMySqlConfiguration
     @Primary
     @Bean
     @Qualifier("configurationDataSource")
-    @Profile({"default"})
+    @Profile({"default", "docker"})
     public DataSource configurationDataSource()
     {
         return DataSourceBuilder.create().build();

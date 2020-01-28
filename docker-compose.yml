@@ -6,18 +6,22 @@ services:
     container_name: pts_mysql
     environment:
       MYSQL_ROOT_PASSWORD: root
+    restart: always
     ports:
       - 3306:3306
     volumes:
       - devmysqldb:/var/lib/pts_mysql
       - ./docker/mysql/pts_db.sql:/docker-entrypoint-initdb.d/pts_db.sql
-#  kds_api:
+#  pts_api:
 #    build:
-#      context: src
+#      context: .
 #      dockerfile: Dockerfile
+#    environment:
+#      - "SPRING_PROFILES_ACTIVE=docker"
 #    depends_on:
 #      - pts_mysql
 #    stdin_open: true
+#    restart : always
 #    tty: true
 #    ports:
 #      - 8080:8080

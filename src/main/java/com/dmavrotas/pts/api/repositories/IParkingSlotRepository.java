@@ -22,4 +22,10 @@ public interface IParkingSlotRepository extends CrudRepository<ParkingSlot, Inte
            "AND s.parkingSlotType.id = :parkingSlotTypeId")
     List<ParkingSlot> findFreeSlotsForType(@Param(value = "parkingId") int parkingId,
                                            @Param(value = "parkingSlotTypeId") int parkingSlotTypeId);
+
+    /**
+     * @param carId
+     * @return
+     */
+    ParkingSlot findParkingSlotByCarId(int carId);
 }

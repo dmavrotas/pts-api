@@ -30,7 +30,7 @@ public class PricingPolicyServiceTest extends RepositoryTestHelper
         var savedPricingPolicy = pricingPolicyService.saveEntity(pricingPolicy);
 
         assertNotNull(savedPricingPolicy);
-        assertEquals(1, ((ArrayList)pricingPolicyRepository.findAll()).size());
+        assertEquals(1, ((ArrayList) pricingPolicyService.getAllEntities()).size());
 
         savedPricingPolicy.setName(EPricingPolicy.FIXED_AMOUNT_PLUS_PER_HOUR);
         savedPricingPolicy.setFormula(new FixedPlusPerHourPricingPolicy(0.5f, 2.5f));
@@ -38,7 +38,7 @@ public class PricingPolicyServiceTest extends RepositoryTestHelper
         savedPricingPolicy = pricingPolicyService.saveEntity(savedPricingPolicy);
 
         assertNotNull(savedPricingPolicy);
-        assertEquals(1, ((ArrayList)pricingPolicyRepository.findAll()).size());
+        assertEquals(1, ((ArrayList) pricingPolicyService.getAllEntities()).size());
         assertEquals(EPricingPolicy.FIXED_AMOUNT_PLUS_PER_HOUR, savedPricingPolicy.getName());
 
         pricingPolicy = new PricingPolicy();
@@ -50,7 +50,7 @@ public class PricingPolicyServiceTest extends RepositoryTestHelper
         savedPricingPolicy = pricingPolicyService.saveEntity(pricingPolicy);
 
         assertNotNull(savedPricingPolicy);
-        assertEquals(2, ((ArrayList)pricingPolicyRepository.findAll()).size());
+        assertEquals(2, ((ArrayList) pricingPolicyService.getAllEntities()).size());
         assertEquals(new PerHourPricingPolicy(0.5f), savedPricingPolicy.getFormula());
         assertEquals(EPricingPolicy.PER_HOUR, savedPricingPolicy.getName());
 
@@ -59,7 +59,7 @@ public class PricingPolicyServiceTest extends RepositoryTestHelper
         assertNotNull(pricingPolicyService.getEntity(savedPricingPolicy.getId()));
 
         assertTrue(pricingPolicyService.deleteEntity(savedPricingPolicy));
-        assertEquals(1, ((ArrayList)pricingPolicyRepository.findAll()).size());
+        assertEquals(1, ((ArrayList) pricingPolicyService.getAllEntities()).size());
 
         assertFalse(pricingPolicyService.deleteEntity(null));
         assertNull(pricingPolicyService.saveEntity(null));

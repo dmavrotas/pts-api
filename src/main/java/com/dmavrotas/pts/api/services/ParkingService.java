@@ -47,4 +47,9 @@ public class ParkingService implements IService<Parking>
 
         return parkingRepository.findById(entity.getId()).orElse(null) == null;
     }
+
+    public Iterable<Parking> getAllEntities()
+    {
+        return parkingRepository.findAll();
+    }
 }

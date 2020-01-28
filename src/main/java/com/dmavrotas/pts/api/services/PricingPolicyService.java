@@ -44,4 +44,9 @@ public class PricingPolicyService implements IService<PricingPolicy>
 
         return pricingPolicyRepository.findById(entity.getId()).orElse(null) == null;
     }
+
+    public Iterable<PricingPolicy> getAllEntities()
+    {
+        return pricingPolicyRepository.findAll();
+    }
 }

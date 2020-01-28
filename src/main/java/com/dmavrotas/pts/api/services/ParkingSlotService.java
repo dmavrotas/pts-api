@@ -80,4 +80,14 @@ public class ParkingSlotService implements IService<ParkingSlot>
 
         return null;
     }
+
+    public Iterable<ParkingSlot> getAllEntities()
+    {
+        return parkingSlotRepository.findAll();
+    }
+
+    public ParkingSlot findParkingSlotByCarId(int carId)
+    {
+        return parkingSlotRepository.findParkingSlotByCarId(carId);
+    }
 }

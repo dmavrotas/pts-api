@@ -34,7 +34,7 @@ public class ParkingSlotTypeServiceTest extends RepositoryTestHelper
         savedParkingSlotType = parkingSlotTypeService.saveEntity(savedParkingSlotType);
 
         assertNotNull(savedParkingSlotType);
-        assertEquals(1, ((ArrayList)parkingSlotTypeRepository.findAll()).size());
+        assertEquals(1, ((ArrayList) parkingSlotTypeService.getAllEntities()).size());
         assertEquals(EParkingSlotType.HIGH_ELECTRICAL_POWER, savedParkingSlotType.getName());
 
         parkingSlotType = new ParkingSlotType();
@@ -45,7 +45,7 @@ public class ParkingSlotTypeServiceTest extends RepositoryTestHelper
         savedParkingSlotType = parkingSlotTypeService.saveEntity(parkingSlotType);
 
         assertNotNull(savedParkingSlotType);
-        assertEquals(2, ((ArrayList)parkingSlotTypeRepository.findAll()).size());
+        assertEquals(2, ((ArrayList) parkingSlotTypeService.getAllEntities()).size());
         assertEquals(EParkingSlotType.LOW_ELECTRICAL_POWER, savedParkingSlotType.getName());
 
         assertNull(parkingSlotTypeService.getEntity(-2));
@@ -53,7 +53,7 @@ public class ParkingSlotTypeServiceTest extends RepositoryTestHelper
         assertNotNull(parkingSlotTypeService.getEntity(savedParkingSlotType.getId()));
 
         assertTrue(parkingSlotTypeService.deleteEntity(savedParkingSlotType));
-        assertEquals(1, ((ArrayList)parkingSlotTypeRepository.findAll()).size());
+        assertEquals(1, ((ArrayList) parkingSlotTypeService.getAllEntities()).size());
 
         assertFalse(parkingSlotTypeService.deleteEntity(null));
         assertNull(parkingSlotTypeService.saveEntity(null));

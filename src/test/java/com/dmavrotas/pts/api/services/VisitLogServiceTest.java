@@ -65,14 +65,14 @@ public class VisitLogServiceTest extends RepositoryTestHelper
         var savedVisitLog = visitLogService.saveEntity(visitLog);
 
         assertNotNull(savedVisitLog);
-        assertEquals(1, ((ArrayList)visitLogRepository.findAll()).size());
+        assertEquals(1, ((ArrayList) visitLogService.getAllEntities()).size());
 
         savedVisitLog.setExitTime(LocalDateTime.now());
 
         savedVisitLog = visitLogService.saveEntity(savedVisitLog);
 
         assertNotNull(savedVisitLog);
-        assertEquals(1, ((ArrayList)visitLogRepository.findAll()).size());
+        assertEquals(1, ((ArrayList) visitLogService.getAllEntities()).size());
         assertNotNull(savedVisitLog.getExitTime());
 
         visitLog = new VisitLog();
@@ -84,7 +84,7 @@ public class VisitLogServiceTest extends RepositoryTestHelper
         savedVisitLog = visitLogService.saveEntity(visitLog);
 
         assertNotNull(savedVisitLog);
-        assertEquals(2, ((ArrayList)visitLogRepository.findAll()).size());
+        assertEquals(2, ((ArrayList) visitLogService.getAllEntities()).size());
         assertNull(savedVisitLog.getExitTime());
 
         assertNull(visitLogService.getEntity(-2));
@@ -92,7 +92,7 @@ public class VisitLogServiceTest extends RepositoryTestHelper
         assertNotNull(visitLogService.getEntity(savedVisitLog.getId()));
 
         assertTrue(visitLogService.deleteEntity(savedVisitLog));
-        assertEquals(1, ((ArrayList)visitLogRepository.findAll()).size());
+        assertEquals(1, ((ArrayList) visitLogService.getAllEntities()).size());
 
         assertFalse(visitLogService.deleteEntity(null));
         assertNull(visitLogService.saveEntity(null));

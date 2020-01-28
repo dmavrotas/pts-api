@@ -50,14 +50,14 @@ public class ParkingServiceTest extends RepositoryTestHelper
         var savedParking = parkingService.saveEntity(parking);
 
         assertNotNull(savedParking);
-        assertEquals(1, ((ArrayList)parkingRepository.findAll()).size());
+        assertEquals(1, ((ArrayList) parkingService.getAllEntities()).size());
 
         savedParking.setName("Greek Parking");
 
         savedParking = parkingService.saveEntity(savedParking);
 
         assertNotNull(savedParking);
-        assertEquals(1, ((ArrayList)parkingRepository.findAll()).size());
+        assertEquals(1, ((ArrayList) parkingService.getAllEntities()).size());
         assertEquals("Greek Parking", savedParking.getName());
 
         parking = new Parking();
@@ -69,7 +69,7 @@ public class ParkingServiceTest extends RepositoryTestHelper
         savedParking = parkingService.saveEntity(parking);
 
         assertNotNull(savedParking);
-        assertEquals(2, ((ArrayList)parkingRepository.findAll()).size());
+        assertEquals(2, ((ArrayList) parkingService.getAllEntities()).size());
         assertEquals(pricingPolicy2, savedParking.getPricingPolicy());
 
         assertNull(parkingService.getEntity(-2));
@@ -77,7 +77,7 @@ public class ParkingServiceTest extends RepositoryTestHelper
         assertNotNull(parkingService.getEntity(savedParking.getId()));
 
         assertTrue(parkingService.deleteEntity(savedParking));
-        assertEquals(1, ((ArrayList)parkingRepository.findAll()).size());
+        assertEquals(1, ((ArrayList) parkingService.getAllEntities()).size());
 
         assertFalse(parkingService.deleteEntity(null));
         assertNull(parkingService.saveEntity(null));

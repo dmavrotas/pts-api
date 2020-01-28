@@ -69,14 +69,14 @@ class BillServiceTest extends RepositoryTestHelper
         var savedBill = billService.saveEntity(bill);
 
         assertNotNull(savedBill);
-        assertEquals(1, ((ArrayList)billRepository.findAll()).size());
+        assertEquals(1, ((ArrayList) billService.getAllEntities()).size());
 
         savedBill.setAmount(5.0);
 
         savedBill = billService.saveEntity(savedBill);
 
         assertNotNull(savedBill);
-        assertEquals(1, ((ArrayList)billRepository.findAll()).size());
+        assertEquals(1, ((ArrayList) billService.getAllEntities()).size());
         assertEquals(5.0, savedBill.getAmount());
 
         bill = new Bill();
@@ -89,7 +89,7 @@ class BillServiceTest extends RepositoryTestHelper
         savedBill = billService.saveEntity(bill);
 
         assertNotNull(savedBill);
-        assertEquals(2, ((ArrayList)billRepository.findAll()).size());
+        assertEquals(2, ((ArrayList) billService.getAllEntities()).size());
         assertEquals(2.0, savedBill.getAmount());
 
         assertNull(billService.getEntity(-2));
@@ -97,7 +97,7 @@ class BillServiceTest extends RepositoryTestHelper
         assertNotNull(billService.getEntity(savedBill.getId()));
 
         assertTrue(billService.deleteEntity(savedBill));
-        assertEquals(1, ((ArrayList)billRepository.findAll()).size());
+        assertEquals(1, ((ArrayList) billService.getAllEntities()).size());
 
         assertFalse(billService.deleteEntity(null));
         assertNull(billService.saveEntity(null));

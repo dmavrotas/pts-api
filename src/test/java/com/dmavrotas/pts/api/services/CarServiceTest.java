@@ -26,14 +26,14 @@ public class CarServiceTest extends RepositoryTestHelper
         var savedCar = carService.saveEntity(car);
 
         assertNotNull(savedCar);
-        assertEquals(1, ((ArrayList)carRepository.findAll()).size());
+        assertEquals(1, ((ArrayList) carService.getAllEntities()).size());
 
         savedCar.setRegistrationPlate("AB-831-EG");
 
         savedCar = carService.saveEntity(savedCar);
 
         assertNotNull(savedCar);
-        assertEquals(1, ((ArrayList)carRepository.findAll()).size());
+        assertEquals(1, ((ArrayList) carService.getAllEntities()).size());
 
         car = new Car();
 
@@ -43,15 +43,19 @@ public class CarServiceTest extends RepositoryTestHelper
         savedCar = carService.saveEntity(car);
 
         assertNotNull(savedCar);
-        assertEquals(2, ((ArrayList)carRepository.findAll()).size());
+        assertEquals(2, ((ArrayList) carService.getAllEntities()).size());
         assertEquals("EF-721-BE", savedCar.getRegistrationPlate());
+
+        assertNotNull(carService.getCarByRegistrationPlate("EF-721-BE"));
+        assertNull(carService.getCarByRegistrationPlate(null));
+        assertNull(carService.getCarByRegistrationPlate("AA-BB-AAA"));
 
         assertNull(carService.getEntity(-2));
 
         assertNotNull(carService.getEntity(savedCar.getId()));
 
         assertTrue(carService.deleteEntity(savedCar));
-        assertEquals(1, ((ArrayList)carRepository.findAll()).size());
+        assertEquals(1, ((ArrayList) carService.getAllEntities()).size());
 
         assertFalse(carService.deleteEntity(null));
         assertNull(carService.saveEntity(null));

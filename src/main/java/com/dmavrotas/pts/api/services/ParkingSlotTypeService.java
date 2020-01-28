@@ -35,7 +35,7 @@ public class ParkingSlotTypeService implements IService<ParkingSlotType>
     @Override
     public boolean deleteEntity(ParkingSlotType entity)
     {
-        if(entity == null)
+        if (entity == null)
         {
             return false;
         }
@@ -43,5 +43,15 @@ public class ParkingSlotTypeService implements IService<ParkingSlotType>
         parkingSlotTypeRepository.delete(entity);
 
         return parkingSlotTypeRepository.findById(entity.getId()).orElse(null) == null;
+    }
+
+    public Iterable<ParkingSlotType> getAllEntities()
+    {
+        return parkingSlotTypeRepository.findAll();
+    }
+
+    public ParkingSlotType findParkingSlotTypeByName(String name)
+    {
+        return parkingSlotTypeRepository.findParkingSlotTypeByName(name);
     }
 }

@@ -5,4 +5,5 @@ import org.springframework.data.repository.CrudRepository;
 
 public interface ICarRepository extends CrudRepository<Car, Integer>
 {
+    Car getCarByRegistrationPlate(String registrationPlate);
 }
