@@ -23,7 +23,7 @@ class BillServiceTest extends RepositoryTestHelper
     {
         var pricingPolicy = new PricingPolicy();
 
-        pricingPolicy.setName(EPricingPolicy.PER_HOUR);
+        pricingPolicy.setName(EPricingPolicy.FIXED_AMOUNT_PLUS_PER_HOUR);
         pricingPolicy.setFormula(new FixedPlusPerHourPricingPolicy(0.5f, 2.5f));
         pricingPolicy.setCreated(LocalDateTime.now());
 
@@ -101,5 +101,10 @@ class BillServiceTest extends RepositoryTestHelper
 
         assertFalse(billService.deleteEntity(null));
         assertNull(billService.saveEntity(null));
+
+        var realBill = billService.createPaymentFromVisitLogAndParkingSlot(parking, parkingSlot, visitLog);
+
+        assertNotNull(realBill);
+        assertEquals(14.5, realBill.getAmount());
     }
 }

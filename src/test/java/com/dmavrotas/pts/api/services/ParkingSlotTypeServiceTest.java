@@ -27,7 +27,7 @@ public class ParkingSlotTypeServiceTest extends RepositoryTestHelper
         var savedParkingSlotType = parkingSlotTypeService.saveEntity(parkingSlotType);
 
         assertNotNull(savedParkingSlotType);
-        assertEquals(1, ((ArrayList)parkingSlotTypeRepository.findAll()).size());
+        assertEquals(1, ((ArrayList) parkingSlotTypeRepository.findAll()).size());
 
         savedParkingSlotType.setName(EParkingSlotType.HIGH_ELECTRICAL_POWER);
 
@@ -57,5 +57,9 @@ public class ParkingSlotTypeServiceTest extends RepositoryTestHelper
 
         assertFalse(parkingSlotTypeService.deleteEntity(null));
         assertNull(parkingSlotTypeService.saveEntity(null));
+
+        assertNull(parkingSlotTypeService.findParkingSlotTypeByName(EParkingSlotType.LOW_ELECTRICAL_POWER));
+
+        assertNotNull(parkingSlotTypeService.findParkingSlotTypeByName(EParkingSlotType.HIGH_ELECTRICAL_POWER));
     }
 }

@@ -1,5 +1,6 @@
 package com.dmavrotas.pts.api.services;
 
+import com.dmavrotas.pts.api.exceptions.*;
 import com.dmavrotas.pts.api.models.*;
 import com.dmavrotas.pts.api.models.enums.EParkingSlotType;
 import com.dmavrotas.pts.api.models.enums.EPricingPolicy;
@@ -32,32 +33,38 @@ public class VisitLogServiceTest extends RepositoryTestHelper
         parkingSlotType.setName(EParkingSlotType.STANDARD);
         parkingSlotType.setCreated(LocalDateTime.now());
 
+        parkingSlotTypeRepository.save(parkingSlotType);
+
         var parking = new Parking();
 
+        parking.setId(1);
         parking.setName("Nice Massena");
         parking.setPricingPolicy(pricingPolicy);
         parking.setCreated(LocalDateTime.now());
 
         var car = new Car();
 
+        car.setId(1);
         car.setRegistrationPlate("EG-721-NF");
         car.setCreated(LocalDateTime.now());
 
         var car2 = new Car();
 
+        car2.setId(2);
         car2.setRegistrationPlate("EG-725-NF");
         car2.setCreated(LocalDateTime.now());
 
         var parkingSlot = new ParkingSlot();
 
-        parkingSlot.setFree(true);
+        parkingSlot.setId(1);
+        parkingSlot.setFree(false);
         parkingSlot.setCar(car);
         parkingSlot.setParking(parking);
         parkingSlot.setParkingSlotType(parkingSlotType);
         parkingSlot.setCreated(LocalDateTime.now());
 
         var visitLog = new VisitLog();
-        
+
         visitLog.setParking(parking);
         visitLog.setCar(car);
         visitLog.setEntryTime(LocalDateTime.now());
@@ -96,5 +103,76 @@ public class VisitLogServiceTest extends RepositoryTestHelper
 
         assertFalse(visitLogService.deleteEntity(null));
         assertNull(visitLogService.saveEntity(null));
+
+        assertThrows(ParkingNotFoundException.class,
+                     () -> visitLogService.checkIn(-2, car.getRegistrationPlate(), parkingSlotType.getName()));
+
+        parkingSlotType.setName(EParkingSlotType.HIGH_ELECTRICAL_POWER);
+
+        assertThrows(ParkingSlotTypeNotFound.class,
+                     () -> visitLogService
+                                   .checkIn(parking.getId(), car.getRegistrationPlate(), parkingSlotType.getName()));
+
+        parkingSlotType.setName(EParkingSlotType.STANDARD);
+
+        assertThrows(ParkingSlotNotAvailableException.class,
+                     () -> visitLogService
+                                   .checkIn(parking.getId(), car.getRegistrationPlate(), parkingSlotType.getName()));
+
+        parkingSlot.setFree(true);
+        parkingSlot.setCar(null);
+
+        parkingSlotRepository.save(parkingSlot);
+
+        var checkedInVisit = visitLogService.checkIn(parking.getId(), "AAA",
+                                                     parkingSlotType.getName());
+
+        assertNotNull(checkedInVisit);
+        assertEquals("AAA", checkedInVisit.getCar().getRegistrationPlate());
+        assertEquals(parking.getName(), checkedInVisit.getParking().getName());
+        assertNotNull(checkedInVisit.getEntryTime());
+        assertNull(checkedInVisit.getExitTime());
+
+        assertThrows(ParkingNotFoundException.class,
+                     () -> visitLogService.checkOut(-2, "AAA"));
+
+        assertThrows(InvalidRegistrationPlateException.class,
+                     () -> visitLogService.checkOut(parking.getId(), "BBB"));
+
+        var car3 = new Car();
+
+        car3.setId(3);
+        car3.setRegistrationPlate("BBB");
+        car3.setCreated(LocalDateTime.now());
+
+        carRepository.save(car3);
+
+        parkingSlot.setCar(car3);
+
+        parkingSlotRepository.save(parkingSlot);
+
+        assertThrows(CarNotParkedException.class,
+                     () -> visitLogService.checkOut(parking.getId(), "EG-721-NF"));
+
+        savedVisitLog.setCar(car3);
+
+        visitLogRepository.save(savedVisitLog);
+
+        parkingSlot.setCar(car);
+
+        parkingSlotRepository.save(parkingSlot);
+
+        assertThrows(VisitLogNotFoundException.class,
+                     () -> visitLogService.checkOut(parking.getId(), "EG-721-NF"));
+
+        savedVisitLog.setCar(car);
+        savedVisitLog.setExitTime(null);
+
+        visitLogRepository.save(savedVisitLog);
+
+        var savedVisitAfterCheckout = visitLogService.checkOut(parking.getId(), "EG-721-NF");
+
+        assertNotNull(savedVisitAfterCheckout);
+        assertNotNull(savedVisitAfterCheckout.getExitTime());
     }
 }

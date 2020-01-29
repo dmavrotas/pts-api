@@ -1,9 +1,14 @@
 package com.dmavrotas.pts.api.services;
 
 import com.dmavrotas.pts.api.models.Bill;
+import com.dmavrotas.pts.api.models.Parking;
+import com.dmavrotas.pts.api.models.ParkingSlot;
+import com.dmavrotas.pts.api.models.VisitLog;
 import com.dmavrotas.pts.api.repositories.IBillRepository;
 import com.dmavrotas.pts.api.services.interfaces.IService;
 import org.springframework.stereotype.Component;
+
+import java.time.LocalDateTime;
 
 @Component
 public class BillService implements IService<Bill>
@@ -65,5 +70,24 @@ public class BillService implements IService<Bill>
     public Iterable<Bill> getAllEntities()
     {
         return billRepository.findAll();
+    }
+
+    /**
+     * @param parking
+     * @param parkingSlot
+     * @param visitLog
+     * @return
+     */
+    public Bill createPaymentFromVisitLogAndParkingSlot(Parking parking, ParkingSlot parkingSlot, VisitLog visitLog)
+    {
+        var bill = new Bill();
+
+        bill.setAmount(parking.getPricingPolicy().getFormula()
+                              .calculateParkingPrice(visitLog.getEntryTime(), visitLog.getExitTime()));
+        bill.setParkingSlot(parkingSlot);
+        bill.setVisitLog(visitLog);
+        bill.setCreated(LocalDateTime.now());
+
+        return billRepository.save(bill);
     }
 }

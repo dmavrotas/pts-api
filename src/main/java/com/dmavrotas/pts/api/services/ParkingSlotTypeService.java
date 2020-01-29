@@ -1,6 +1,7 @@
 package com.dmavrotas.pts.api.services;
 
 import com.dmavrotas.pts.api.models.ParkingSlotType;
+import com.dmavrotas.pts.api.models.enums.EParkingSlotType;
 import com.dmavrotas.pts.api.repositories.IParkingSlotTypeRepository;
 import com.dmavrotas.pts.api.services.interfaces.IService;
 import org.springframework.stereotype.Component;
@@ -50,7 +51,7 @@ public class ParkingSlotTypeService implements IService<ParkingSlotType>
         return parkingSlotTypeRepository.findAll();
     }
 
-    public ParkingSlotType findParkingSlotTypeByName(String name)
+    public ParkingSlotType findParkingSlotTypeByName(EParkingSlotType name)
     {
         return parkingSlotTypeRepository.findParkingSlotTypeByName(name);
     }

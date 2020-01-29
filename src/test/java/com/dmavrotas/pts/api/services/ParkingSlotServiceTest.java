@@ -157,5 +157,7 @@ public class ParkingSlotServiceTest extends RepositoryTestHelper
         parkingSlotService.saveEntity(savedParkingSlot);
 
         assertNull(parkingSlotService.findFreeSlotsForType(0, 0));
+
+        assertEquals(savedParkingSlot, parkingSlotService.findParkingSlotByCarId(car2.getId()));
     }
 }

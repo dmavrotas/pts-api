@@ -1,7 +1,6 @@
 package com.dmavrotas.pts.api.services;
 
 import com.dmavrotas.pts.api.exceptions.*;
-import com.dmavrotas.pts.api.models.Bill;
 import com.dmavrotas.pts.api.models.Car;
 import com.dmavrotas.pts.api.models.VisitLog;
 import com.dmavrotas.pts.api.models.enums.EParkingSlotType;
@@ -19,21 +18,18 @@ public class VisitLogService implements IService<VisitLog>
     protected final CarService carService;
     protected final ParkingSlotService parkingSlotService;
     protected final ParkingSlotTypeService parkingSlotTypeService;
-    protected final BillService billService;
 
     public VisitLogService(IVisitLogRepository visitLogRepository,
                            ParkingService parkingService,
                            CarService carService,
                            ParkingSlotService parkingSlotService,
-                           ParkingSlotTypeService parkingSlotTypeService,
-                           BillService billService)
+                           ParkingSlotTypeService parkingSlotTypeService)
     {
         this.visitLogRepository = visitLogRepository;
         this.parkingService = parkingService;
         this.carService = carService;
         this.parkingSlotService = parkingSlotService;
         this.parkingSlotTypeService = parkingSlotTypeService;
-        this.billService = billService;
     }
 
     @Override
@@ -86,7 +82,7 @@ public class VisitLogService implements IService<VisitLog>
      * @param registrationPlate
      * @param parkingSlotType
      */
-    public void checkIn(int parkingId, String registrationPlate, EParkingSlotType parkingSlotType)
+    public VisitLog checkIn(int parkingId, String registrationPlate, EParkingSlotType parkingSlotType)
     {
         var parking = parkingService.getEntity(parkingId);
 
@@ -107,7 +103,7 @@ public class VisitLogService implements IService<VisitLog>
             carService.saveEntity(car);
         }
 
-        var parkingSlotTypeFromDb = parkingSlotTypeService.findParkingSlotTypeByName(parkingSlotType.name());
+        var parkingSlotTypeFromDb = parkingSlotTypeService.findParkingSlotTypeByName(parkingSlotType);
 
         if (parkingSlotTypeFromDb == null)
         {
@@ -133,14 +129,14 @@ public class VisitLogService implements IService<VisitLog>
         visitLog.setCar(car);
         visitLog.setEntryTime(LocalDateTime.now());
 
-        visitLogRepository.save(visitLog);
+        return visitLogRepository.save(visitLog);
     }
 
     /**
      * @param parkingId
      * @param registrationPlate
      */
-    public void checkOut(int parkingId, String registrationPlate)
+    public VisitLog checkOut(int parkingId, String registrationPlate)
     {
         var parking = parkingService.getEntity(parkingId);
 
@@ -176,16 +172,6 @@ public class VisitLogService implements IService<VisitLog>
 
         visitLog.setExitTime(LocalDateTime.now());
 
-        var visitLogDb = visitLogRepository.save(visitLog);
-
-        var bill = new Bill();
-
-        bill.setAmount(parking.getPricingPolicy().getFormula()
-                              .calculateParkingPrice(visitLogDb.getEntryTime(), visitLogDb.getExitTime()));
-        bill.setParkingSlot(parkingSlot);
-        bill.setVisitLog(visitLogDb);
-        bill.setCreated(LocalDateTime.now());
-
-        billService.saveEntity(bill);
+        return visitLogRepository.save(visitLog);
     }
 }

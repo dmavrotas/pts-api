@@ -16,6 +16,7 @@ The following technologies are used :
 * Java 11
 * MySQL
 * Docker
+* JUnit 5 (Juniper API)
 
 ### In Detail
 
@@ -64,6 +65,7 @@ The docker-compose will first create the MySQL database from the file pts_db.sql
 
 ### Technical
 
+* Introducing logging (Apache log4j most possibly).
 * Usage of liquibase for database migrations.
 * More Unit Tests with mockito, apart from the embedded db ones.
 * Java 14
@@ -74,6 +76,7 @@ The docker-compose will first create the MySQL database from the file pts_db.sql
 * Introduce more DTOs, this way the abstraction is better and potentially we can foresee some potential problems.
 * Introduce a NoSQL solution for the visiting system (CassandraDB could be good for that), along with a queue system (PubNub, AWS SQS) per Slot Type in order to be faster and safer.
 * Right now the concurrency is resolved on a db level (locks), with AWS RDS this can be as good as the software locking, but for safety, we could introduce some semaphores for the slot allocation, we can synchronize the slot allocations by using messaging queueing systems such as PubNub or AWS SQS.
+* Automate model tests, equals and toString with annotations in order to be implemented automatically using Apache Commons 3 library.  
 
 ### Functional
 
