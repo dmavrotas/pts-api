@@ -1,7 +1,9 @@
 package com.dmavrotas.pts.api.controllers;
 
 import com.dmavrotas.pts.api.models.VisitLog;
+import com.dmavrotas.pts.api.models.enums.EParkingSlotType;
 import com.dmavrotas.pts.api.services.VisitLogService;
+import com.dmavrotas.pts.api.services.dto.VisitDto;
 import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.*;
 
@@ -42,5 +44,20 @@ public class VisitLogController
     public boolean delete(@PathVariable(name = "id") int id)
     {
         return visitLogService.deleteEntity(visitLogService.getEntity(id));
+    }
+
+    @PostMapping(value = "/checkIn")
+    @ResponseStatus(value = HttpStatus.OK)
+    public VisitLog checkIn(@RequestBody VisitDto visitDto)
+    {
+        return visitLogService.checkIn(visitDto.getParkingId(), visitDto.getRegistrationPlate(),
+                                       EParkingSlotType.valueOf(visitDto.getParkingSlotTypeName()));
+    }
+
+    @PostMapping(value = "/checkOut")
+    @ResponseStatus(value = HttpStatus.OK)
+    public VisitLog checkOut(@RequestBody VisitDto visitDto)
+    {
+        return visitLogService.checkOut(visitDto.getParkingId(), visitDto.getRegistrationPlate());
     }
 }
