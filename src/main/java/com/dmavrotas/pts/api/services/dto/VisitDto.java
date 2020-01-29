@@ -4,11 +4,17 @@ import org.apache.commons.lang3.builder.EqualsBuilder;
 import org.apache.commons.lang3.builder.HashCodeBuilder;
 import org.apache.commons.lang3.builder.ToStringBuilder;
 
-public class VisitDto
+import java.io.Serializable;
+
+public class VisitDto implements Serializable
 {
     private int parkingId;
     private String registrationPlate;
     private String parkingSlotTypeName;
+
+    public VisitDto()
+    {
+    }
 
     public VisitDto(int parkingId, String registrationPlate, String parkingSlotTypeName)
     {

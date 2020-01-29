@@ -3,6 +3,7 @@ package com.dmavrotas.pts.api.controllers;
 import com.dmavrotas.pts.api.models.*;
 import com.dmavrotas.pts.api.models.enums.EParkingSlotType;
 import com.dmavrotas.pts.api.models.enums.EPricingPolicy;
+import com.dmavrotas.pts.api.services.dto.BillDto;
 import com.dmavrotas.pts.api.services.pricingpolicies.FixedPlusPerHourPricingPolicy;
 import org.junit.jupiter.api.Test;
 import org.springframework.http.MediaType;
@@ -10,10 +11,10 @@ import org.springframework.test.web.servlet.request.MockMvcRequestBuilders;
 import org.springframework.test.web.servlet.result.MockMvcResultMatchers;
 
 import java.time.LocalDateTime;
+import java.util.ArrayList;
 import java.util.List;
 
-import static org.junit.jupiter.api.Assertions.assertNotNull;
-import static org.junit.jupiter.api.Assertions.assertNull;
+import static org.junit.jupiter.api.Assertions.*;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.delete;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
 
@@ -132,5 +133,15 @@ class BillControllerTest extends BaseControllerTest
         var deletedBill = billRepository.findById(3).orElse(null);
 
         assertNull(deletedBill);
+
+        var billDto = new BillDto(1, 1, 1);
+
+        postContent = post("/api/pts/bill/payment").contentType(MediaType.APPLICATION_JSON).content(
+                objectMapper.writeValueAsString(billDto));
+
+        mockMvc.perform(postContent).andExpect(MockMvcResultMatchers.status().isOk());
+
+        assertEquals(3, ((ArrayList) billRepository.findAll()).size());
+        assertNotNull(billRepository.findById(4));
     }
 }

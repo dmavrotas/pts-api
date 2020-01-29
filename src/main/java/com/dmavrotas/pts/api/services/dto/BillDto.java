@@ -4,11 +4,18 @@ import org.apache.commons.lang3.builder.EqualsBuilder;
 import org.apache.commons.lang3.builder.HashCodeBuilder;
 import org.apache.commons.lang3.builder.ToStringBuilder;
 
-public class BillDto
+import java.io.Serializable;
+
+public class BillDto implements Serializable
 {
     private int parkingId;
     private int parkingSlotId;
     private int visitLogId;
+
+    public BillDto()
+    {
+
+    }
 
     public BillDto(int parkingId, int parkingSlotId, int visitLogId)
     {

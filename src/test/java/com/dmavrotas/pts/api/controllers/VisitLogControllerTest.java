@@ -3,17 +3,19 @@ package com.dmavrotas.pts.api.controllers;
 import com.dmavrotas.pts.api.models.*;
 import com.dmavrotas.pts.api.models.enums.EParkingSlotType;
 import com.dmavrotas.pts.api.models.enums.EPricingPolicy;
+import com.dmavrotas.pts.api.services.dto.VisitDto;
 import com.dmavrotas.pts.api.services.pricingpolicies.FixedPlusPerHourPricingPolicy;
 import org.junit.jupiter.api.Test;
 import org.springframework.http.MediaType;
 import org.springframework.test.web.servlet.request.MockMvcRequestBuilders;
 import org.springframework.test.web.servlet.result.MockMvcResultMatchers;
+import org.springframework.web.util.NestedServletException;
 
 import java.time.LocalDateTime;
+import java.util.ArrayList;
 import java.util.List;
 
-import static org.junit.jupiter.api.Assertions.assertNotNull;
-import static org.junit.jupiter.api.Assertions.assertNull;
+import static org.junit.jupiter.api.Assertions.*;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.delete;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
 
@@ -92,6 +94,7 @@ class VisitLogControllerTest extends BaseControllerTest
         visitLog.setParking(savedParking);
         visitLog.setCar(savedCar);
         visitLog.setEntryTime(LocalDateTime.now());
+        visitLog.setExitTime(LocalDateTime.now().plusDays(1));
 
         var savedVisitLog2 = visitLogRepository.save(visitLog);
 
@@ -122,5 +125,36 @@ class VisitLogControllerTest extends BaseControllerTest
         var deletedVisitLog = visitLogRepository.findById(3).orElse(null);
 
         assertNull(deletedVisitLog);
+
+        var visitDto = new VisitDto(1, "EG-721-NF", "STANDARD");
+
+        postContent = post("/api/pts/visitLog/checkIn")
+                              .contentType(MediaType.APPLICATION_JSON)
+                              .content(objectMapper.writeValueAsString(visitDto));
+
+        mockMvc.perform(postContent).andExpect(MockMvcResultMatchers.status().isOk());
+
+        assertTrue(((ArrayList) visitLogRepository.findAll()).size() == 3);
+
+        assertNull(visitLogRepository.findById(4).get().getExitTime());
+
+        postContent = post("/api/pts/visitLog/checkOut")
+                              .contentType(MediaType.APPLICATION_JSON)
+                              .content(objectMapper.writeValueAsString(visitDto));
+
+        mockMvc.perform(postContent).andExpect(MockMvcResultMatchers.status().isOk());
+
+        assertTrue(((ArrayList) visitLogRepository.findAll()).size() == 3);
+
+        assertNotNull(visitLogRepository.findById(4).get().getExitTime());
+
+        visitDto.setParkingSlotType("PER_HOUR");
+
+        var postContent2 = post("/api/pts/visitLog/checkIn")
+                                   .contentType(MediaType.APPLICATION_JSON)
+                                   .content(objectMapper.writeValueAsString(visitDto));
+
+        assertThrows(NestedServletException.class, () -> mockMvc.perform(postContent2).andExpect(
+                MockMvcResultMatchers.status().isInternalServerError()));
     }
 }
