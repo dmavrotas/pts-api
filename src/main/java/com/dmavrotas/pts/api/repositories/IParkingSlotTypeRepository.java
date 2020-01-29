@@ -7,8 +7,10 @@ import org.springframework.data.repository.CrudRepository;
 public interface IParkingSlotTypeRepository extends CrudRepository<ParkingSlotType, Integer>
 {
     /**
-     * @param name
-     * @return
+     * Find parkingSlot type by Name
+     *
+     * @param name The name of the parkingSlotType
+     * @return The parkingSlotType found
      */
     ParkingSlotType findParkingSlotTypeByName(EParkingSlotType name);
 }

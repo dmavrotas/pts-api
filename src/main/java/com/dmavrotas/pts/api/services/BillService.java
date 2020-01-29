@@ -73,10 +73,12 @@ public class BillService implements IService<Bill>
     }
 
     /**
-     * @param parking
-     * @param parkingSlot
-     * @param visitLog
-     * @return
+     * Make the client pay for his/her stay in the parking
+     *
+     * @param parking     The parking
+     * @param parkingSlot The parkingSlot in which the car was parked
+     * @param visitLog    The visitLog item which it's the current visit of the car and contains the entry and the exit time
+     * @return The bill with the amount depending on the pricing policy
      */
     public Bill createPaymentFromVisitLogAndParkingSlot(Parking parking, ParkingSlot parkingSlot, VisitLog visitLog)
     {

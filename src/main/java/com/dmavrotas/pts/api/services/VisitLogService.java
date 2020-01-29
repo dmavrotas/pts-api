@@ -78,9 +78,12 @@ public class VisitLogService implements IService<VisitLog>
     }
 
     /**
-     * @param parkingId
-     * @param registrationPlate
-     * @param parkingSlotType
+     * Check in the car in one parking for a specific parkingSlotType
+     *
+     * @param parkingId         The parking id
+     * @param registrationPlate The car's registration plate
+     * @param parkingSlotType   The parking Slot Type for we need to find place for.
+     * @return The VisitLog created
      */
     public VisitLog checkIn(int parkingId, String registrationPlate, EParkingSlotType parkingSlotType)
     {
@@ -133,8 +136,11 @@ public class VisitLogService implements IService<VisitLog>
     }
 
     /**
-     * @param parkingId
-     * @param registrationPlate
+     * Check out the car from its parkingSlot
+     *
+     * @param parkingId The parking id
+     * @param registrationPlate The car's registration plate
+     * @return The VisitLog with exit time
      */
     public VisitLog checkOut(int parkingId, String registrationPlate)
     {

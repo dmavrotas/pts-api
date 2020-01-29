@@ -33,6 +33,8 @@ This enables us to mock the tests and to reproduce a behavior very similar to th
 
 For every entity (see the db schema on the file pts_db.mwb), there is a basic CRUD API with a small twist.
 
+Small compromise. For the moment the car type (for which we will define its slot type) is the same with the parkingSlotType, that's why it's passed with the checkIn API and it's not saved with the car inside the db. Check out the Improvements section for more info. 
+
 We use GET for everything that involves get.
 We use POST for everything that involves creation or/and edition. Meaning we use the same route for both creation and edition and we use the same interface to save or edit. The basic idea is that if the item posted doesn't exist, it will be created and if it does exist it will be updated.
 If there is a bit more time, we could divide the creation and the edition by doing an idempotent PUT for creation and a POST for edition, while the only difference in the implementation will be that we will check the existence before the save. 

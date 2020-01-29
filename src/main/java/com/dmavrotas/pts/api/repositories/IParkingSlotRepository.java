@@ -10,10 +10,11 @@ import java.util.List;
 public interface IParkingSlotRepository extends CrudRepository<ParkingSlot, Integer>
 {
     /**
+     * Find a free parking slot for a specific parking for a specific parkingSlotType
      *
-     * @param parkingId
-     * @param parkingSlotTypeId
-     * @return
+     * @param parkingId         The parking Id
+     * @param parkingSlotTypeId The parkingSlotTypeId
+     * @return The List of available free parkingSlots for this type.
      */
     @Query("SELECT s " +
            "FROM ParkingSlot s " +
@@ -24,8 +25,10 @@ public interface IParkingSlotRepository extends CrudRepository<ParkingSlot, Inte
                                            @Param(value = "parkingSlotTypeId") int parkingSlotTypeId);
 
     /**
-     * @param carId
-     * @return
+     * Find in which parkingSlot a car is parked
+     *
+     * @param carId The car id
+     * @return The Parking Slot for this car
      */
     ParkingSlot findParkingSlotByCarId(int carId);
 }
