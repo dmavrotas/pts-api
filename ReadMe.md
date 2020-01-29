@@ -82,4 +82,5 @@ The docker-compose will first create the MySQL database from the file pts_db.sql
 
 * Introduce Car Type, in case we have changes between which car type corresponds to which Slot Type. 
 * Find a way to make Pricing Policy more generic, right now we need a bit of code to introduce a new Pricing Policy.
+* Having the registry plates on the db is not the best thing in the world. We can use a technology like blockchain to identify each car about his visits in the garage. It would be a nice version 2.0.
 
