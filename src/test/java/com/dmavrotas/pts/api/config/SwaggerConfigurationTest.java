@@ -13,13 +13,13 @@ import static org.junit.jupiter.api.Assertions.assertNotNull;
 @ExtendWith(SpringExtension.class)
 @SpringBootTest(classes = PtsApiApplicationTests.class)
 @ActiveProfiles({"test"})
-public class SwaggerConfigurationTest
+class SwaggerConfigurationTest
 {
     @Autowired
     SwaggerConfiguration swaggerConfiguration;
 
     @Test
-    public void test()
+    void test()
     {
         assertNotNull(swaggerConfiguration.api());
     }

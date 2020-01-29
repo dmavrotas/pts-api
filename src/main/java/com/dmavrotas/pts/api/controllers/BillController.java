@@ -30,7 +30,7 @@ public class BillController
         return billService.getEntity(id);
     }
 
-    @PostMapping()
+    @PostMapping
     @ResponseStatus(value = HttpStatus.OK)
     public Bill save(@RequestBody Bill bill)
     {

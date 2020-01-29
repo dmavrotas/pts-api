@@ -26,7 +26,7 @@ What is more, while HikariCP is faster for a number of queries, the difference b
 
 ### Testing
 
-For testing, apart from the classic spring boot starter libraries, we made use of mockito and an embedded HSQL database that resembles the real schema of the db we will have on production.
+For testing, apart from the classic spring boot starter libraries, we made use of an embedded HSQL database that resembles the real schema of the db we will have on production.
 This enables us to mock the tests and to reproduce a behavior very similar to the one we will have on the production environment. 
 
 ## Functional Details
@@ -67,7 +67,7 @@ The docker-compose will first create the MySQL database from the file pts_db.sql
 
 * Introducing logging (Apache log4j most possibly).
 * Usage of liquibase for database migrations.
-* More Unit Tests with mockito, apart from the embedded db ones.
+* Unit Tests with mockito, to co-exists along with the embedded db ones.
 * Java 14
 * Introduce basic exception handling hub using annotations and AspectJ.
 * Introduce basic wrapping of the final object that is sent back from the API.
